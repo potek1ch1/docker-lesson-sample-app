@@ -5,6 +5,7 @@ async function main() {
   // ユーザーデータを作成
   const sampleUser1 = await prisma.user.create({
     data: {
+      id: '3',
       username: 'john_doe',
       password: 'password123', // 実際にはハッシュ化したパスワードを使用してください
     },
@@ -12,6 +13,7 @@ async function main() {
 
   const sampleUser2 = await prisma.user.create({
     data: {
+      id: '2',
       username: 'jane_doe',
       password: 'securepass456', // 実際にはハッシュ化したパスワードを使用してください
     },
@@ -19,6 +21,7 @@ async function main() {
 
   const testUser = await prisma.user.create({
     data: {
+      id:'1',
       username: 'test_user',
       password: "test"
     }

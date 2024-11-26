@@ -2,6 +2,8 @@ import { FaHeart } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaShareFromSquare } from "react-icons/fa6";
 
+
+
 type PostProps = {
   id: string;
   content: string;
@@ -23,7 +25,6 @@ const Board = ( {post}:{post:PostProps} ) => {
       <p className="whitespace-pre-line text-left">{post.content}</p>
       <div className="flex gap-5 justify-end">
         <button className="">
-          {/* <FaRegHeart /> */}
           <FaHeart size={20} />
         </button>
         <button>

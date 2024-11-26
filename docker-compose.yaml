@@ -1,6 +1,29 @@
 version: '3.9'
 
 services:
+  web:
+    build:
+      context: ./board-front
+      dockerfile: ../docker/Dockerfile.front.prod
+      args:
+        - VITE_SERVER_URL=http://localhost:8080
+    restart: always
+    ports:
+      - "80:80"
+      
+  app:
+    build:
+      context: ./board-back
+      dockerfile: ../docker/Dockerfile.back
+    restart: always
+    ports:
+      - "8080:8080"
+
+    environment:
+      - DATABASE_URL=postgresql://admin:admin@db:5432/docker-lesson?schema=public
+    depends_on:
+          db:
+            condition: service_healthy
 
   db:
     image: postgres:17.2-alpine3.20
@@ -9,14 +32,14 @@ services:
     # set shared memory limit when using docker-compose
     shm_size: 128mb
     # or set shared memory limit when deploy via swarm stack
-    #volumes:
-    #  - type: tmpfs
-    #    target: /dev/shm
-    #    tmpfs:
-    #      size: 134217728 # 128*2^20 bytes = 128Mb
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: potekichi
-      POSTGRES_USER: potekichi
-      # POSTGRES_DB: potekichi
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: docker-lesson
+    healthcheck: # ヘルスチェックを追加
+      test: ["CMD-SHELL", "pg_isready -U admin -d docker-lesson"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

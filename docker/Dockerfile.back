@@ -1,0 +1,9 @@
+FROM oven/bun:latest
+WORKDIR /app
+
+COPY . /app
+
+RUN bun install 
+
+#initializ.shを起動
+CMD ["sh", "./initialize.sh"]

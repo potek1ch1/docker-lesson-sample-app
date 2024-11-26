@@ -16,7 +16,9 @@ app.use(
   "/*",
   cors({
     origin: "*",
-    allowHeaders: ["X-Custom-Header", "Upgrade-Insecure-Requests"],
+    allowHeaders: [
+      'Content-Type', 'Authorization'
+    ],
     allowMethods: ["POST", "GET"],
   })
 );
@@ -46,6 +48,24 @@ app.get("/posts", async (c) => {
   });
 
   return c.json(posts);
+});
+
+app.post("/posts", async (c) => {
+  const body = await c.req.json();
+  const { content, createdById } = body;
+  console.log(content, createdById);
+  if (!content || !createdById) {
+    c.status(400);
+    return c.json({ error: "content or createdById is required" });
+  }
+  const post = await prisma.post.create({
+    data: {
+      content,
+      createdById,
+    },
+  });
+
+  return c.json(post);
 });
 
 export default {
